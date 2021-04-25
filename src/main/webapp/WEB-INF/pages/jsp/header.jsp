@@ -10,11 +10,11 @@
       <li id="loginPage"><a href="login">Login</a></li>
       <li id="usersPage"><a href="users">Show Users</a></li>
     </ul>
-    <form class="navbar-form navbar-left" method="post" action="searchAction">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search" name="search">
+    <form class="navbar-form navbar-right" method="post">
+      <div class="navbar-form navbar-left input-group">
+        <input type="text" class="form-control" placeholder="Search" name="searchId" id="searchId">
         <div class="input-group-btn">
-          <button class="btn btn-default" type="submit">
+          <button class="btn btn-default" type="submit" onclick="return searchUserById();">
             <i class="glyphicon glyphicon-search"></i>
           </button>
         </div>
@@ -22,4 +22,4 @@
     </form>
   </div>
 </nav>
-    
+<script src="js/utils.js"></script>
