@@ -1,0 +1,11 @@
+@charset "ISO-8859-1";
+
+h2{
+		background-color:lightgreen; 
+		color:white;
+		text-transform: uppercase;
+		padding:10px;
+		margin-bottom:50px;
+}
+	
+	
