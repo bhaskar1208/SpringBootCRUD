@@ -2,6 +2,9 @@ package com.hibernateExample.springHibernate.controller;
 
 import java.util.List;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +41,16 @@ public class OtherController {
 	}
 	
 	//Controller to Search Single User
-	@GetMapping("searchAction/{id}")
-	public @ResponseBody String searchAction(@PathVariable String id) {
-		return this.userService.getUser(Long.parseLong(id));
+	@RequestMapping("user")
+	public String searchAction(@RequestParam("searchId") String id, Model model) throws ParseException {
+		String user=this.userService.getUser(Long.parseLong(id));
+		JSONParser perser=new JSONParser();
+		JSONObject object=(JSONObject) perser.parse(user);
+		model.addAttribute("userid",object.get("uid"));
+		model.addAttribute("username",object.get("name"));
+		model.addAttribute("useremail",object.get("email"));
+		model.addAttribute("useradd",object.get("address"));
+		return "user";
 	}
 	
 	//Controller to Delete Single User

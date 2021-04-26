@@ -10,11 +10,11 @@
       <li id="loginPage"><a href="login">Login</a></li>
       <li id="usersPage"><a href="users">Show Users</a></li>
     </ul>
-    <form class="navbar-form navbar-right" method="post">
+    <form class="navbar-form navbar-right" method="post" action="user">
       <div class="navbar-form navbar-left input-group">
-        <input type="text" class="form-control" placeholder="Search" name="searchId" id="searchId">
+        <input type="text" class="form-control" placeholder="Search" name="searchId" required>
         <div class="input-group-btn">
-          <button class="btn btn-default" type="submit" onclick="return searchUserById();">
+          <button class="btn btn-default" type="submit">
             <i class="glyphicon glyphicon-search"></i>
           </button>
         </div>
