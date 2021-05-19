@@ -7,7 +7,13 @@ public class MainController {
 	//Root Redirection
 	@RequestMapping("/")
 	public String mainMethod() {
-		return "home";
+		return "login";
+	}
+	
+	//Login Page Redirection
+	@RequestMapping("index")
+	public String Index() {
+		return "login";
 	}
 	
 	//Home Page Redirection
@@ -22,9 +28,9 @@ public class MainController {
 		return "registration";
 	}
 	
-	//Login Page Redirection
-	@RequestMapping("login")
-	public String Login() {
-		return "login";
+	//Logout
+	@RequestMapping("logout")
+	public String logoutFunc(){
+		return "logout";
 	}
 }

@@ -23,7 +23,10 @@ public class Users {
 	
 	@Column(name="address")
 	private String address;
-
+	
+	@Column(name="password")
+	private String password;
+	
 	public long getId() {
 		return id;
 	}
@@ -48,9 +51,15 @@ public class Users {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	@Override
 	public String toString() {
-		return "Users [id=" + id + ", name=" + name + ", email=" + email + ", address=" + address + "]";
+		return "Users [id=" + id + ", name=" + name + ", email=" + email + ", address=" + address + ", password="
+				+ password + "]";
 	}
-	
 }

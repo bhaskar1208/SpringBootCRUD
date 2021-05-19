@@ -6,9 +6,8 @@
       <a class="navbar-brand" id="home" href="home">Hibernate Users Management</a>
     </div>
     <ul class="nav navbar-nav">
-      <li id="regPage"><a href="reg">Registration</a></li>
-      <li id="loginPage"><a href="login">Login</a></li>
-      <li id="usersPage"><a href="users">Show Users</a></li>
+      <li id="usersPage"><a href="users">Show All Users</a></li>
+      <li id="logout"><a href="logout">Logout</a></li>
     </ul>
     <form class="navbar-form navbar-right" method="post" action="user">
       <div class="navbar-form navbar-left input-group">

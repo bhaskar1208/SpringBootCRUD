@@ -5,6 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Web Application using Spring Boot</title>
+<%@ include file="Auth.jsp" %> 
 <%@ include file="head.jsp" %> 
 </head>
 <body>

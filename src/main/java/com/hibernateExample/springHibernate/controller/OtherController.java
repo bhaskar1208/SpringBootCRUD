@@ -2,6 +2,8 @@ package com.hibernateExample.springHibernate.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,6 +27,40 @@ public class OtherController {
 	@Autowired
 	public UserService userService;
 	
+	/**********************************************************************************************************/
+	
+	//Controller to login handle
+	@RequestMapping("loginAction")
+	public String login(@RequestParam("email") String email,@RequestParam("password") String pwd,Model model,HttpSession session) {
+		String res=this.userService.userLogin(email,pwd);
+		if(res.equals("1")){
+			session.setAttribute("email", email);
+			return "home";
+		}
+		else{
+			model.addAttribute("msg",res);
+			return "login";
+		}
+	}
+	
+	/**********************************************************************************************************/
+	
+	//Controller to change password
+	@RequestMapping("updatePassword")
+	public String changePassword(@RequestParam("email") String email,@RequestParam("currPass") String currPass, @RequestParam("newPass") String newPass, @RequestParam("confPass") String confPass,Model model) {
+		if(!newPass.equals(confPass)) {
+			model.addAttribute("errmsg","New Password and Confirm Password didn't matched !");
+			return "login";
+		}
+		else if(!email.equals("") && !currPass.equals("") && !newPass.equals("") && !confPass.equals("")) {
+			this.userService.updatePassword(email,currPass,newPass);
+			model.addAttribute("successmsg","Password successfully changed !");
+		}
+		return "login";
+	}
+	
+	/**********************************************************************************************************/
+	
 	//Controller to add user
 	@RequestMapping(value="addUser",method=RequestMethod.POST)
 	public String sendAction(Users user,ModelMap model)
@@ -32,6 +68,9 @@ public class OtherController {
 		model.addAttribute("msg", "User "+user.getName()+" saved successfully !!");
 		return this.userService.addDetails(user);
 	}
+	
+	/**********************************************************************************************************/
+	
 	//Controller to fetch all users
 	@RequestMapping("users")
 	public String getAllUser(Model model) {
@@ -39,6 +78,8 @@ public class OtherController {
 		model.addAttribute("listUsers", listUsers);
 		return "allUsers";
 	}
+	
+	/**********************************************************************************************************/
 	
 	//Controller to Search Single User
 	@RequestMapping("user")
@@ -53,11 +94,15 @@ public class OtherController {
 		return "user";
 	}
 	
+	/**********************************************************************************************************/
+	
 	//Controller to Delete Single User
 	@GetMapping(value="deleteUser/{uid}")
 	public @ResponseBody String deleteUser(@PathVariable String uid) {
 		return this.userService.deleteUser(Long.parseLong(uid));
 	}
+	
+	/**********************************************************************************************************/
 	
 	//Controller to update single user details
 	@PostMapping("updateUser")
