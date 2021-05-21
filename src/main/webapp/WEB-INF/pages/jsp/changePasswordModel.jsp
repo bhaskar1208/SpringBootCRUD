@@ -30,7 +30,7 @@
 				      		<label for="currPass">New Password</label>
 				      	</div>
 				      	<div class="col-md-6 col-sm-12">
-				      		<input type="password" name="newPass" id="newPass" class="form-control" placeholder="Enter new password" required>
+				      		<input type="password" name="newPass" id="newPass" class="form-control" placeholder="Enter new password" onkeyup="return validate(this.value,'changePasswordBtn')" required>
 				      	</div>
 				     </div>
 				     <br>
@@ -39,7 +39,7 @@
 				      		<label for="currPass">Confirm Password</label>
 				      	</div>
 				      	<div class="col-md-6 col-sm-12">
-				      		<input type="password" name="confPass" id="confPass" class="form-control" placeholder="Confirm new password" required>
+				      		<input type="password" name="confPass" id="confPass" class="form-control" placeholder="Confirm new password" onkeyup="return validate(this.value,'changePasswordBtn')" required>
 				      	</div>
 				     </div>
 				     <br>
@@ -48,7 +48,12 @@
 				      		Show/Hide Password <input type="checkbox" name="showPasswordBox" id="showPasswordBox">
 				      	</div>
 				     </div>
-				     
+				     <br>
+				     <div class="row">
+				     	<div class="col-md-12">
+				     		<p id="invalidTxt" class="text-danger"></p>
+				     	</div>
+				     </div>
 				     <br>
 				     <div class="row">
 		      			<div class="col-md-12 col-sm-12">

@@ -1,27 +1,37 @@
 package com.hibernateExample.springHibernate.services;
 
-import java.util.Base64;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.hibernateExample.springHibernate.controller.PasswordEncryptionDecryption;
 import com.hibernateExample.springHibernate.methods.Users;
 import com.hibernateExample.springHibernate.repo.MainRepo;
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
+	public PasswordEncryptionDecryption encdec;
+	
+	@Autowired
 	private MainRepo repo;
+	@SuppressWarnings("null")
 	@Override
 	
 	/**********************************************************************************************************/
 	//Code to handle login
-	public String userLogin(String email, String pwd) {
+	public String userLogin(String email, String pwd,HttpSession session) {
 		int status=0;
-		String epwd=getEncodedString(pwd);
+		String epwd=encdec.getEncodedString(pwd);
 		for(Users us : repo.findAll()) {
-			//System.out.println("Entered: "+email+"   "+epwd);
-			//System.out.println("From Database: "+us.getEmail()+"   "+us.getPassword());
 			if(us.getEmail().equals(email) && us.getPassword().equals(epwd)) {
+				session.setAttribute("name", us.getName());
+				session.setAttribute("email", us.getEmail());
+				session.setAttribute("address", us.getAddress());
+				session.setAttribute("password", encdec.getDecodedString(us.getPassword()));
 				status=1;
 			}
 			else if(us.getEmail().equals(email) && !us.getPassword().equals(epwd)) {
@@ -34,7 +44,7 @@ public class UserServiceImpl implements UserService {
 				status=4;
 			}
 		}
-		if(status==1)
+		if(status==1) 
 		return "1";
 		else if(status==2)
 		return "Incorrect password ! Please try again.";
@@ -49,18 +59,17 @@ public class UserServiceImpl implements UserService {
 
 	/**********************************************************************************************************/
 	
-	@SuppressWarnings("null")
 	//Code to update password
 	@Override
 	public String updatePassword(String email,String currPass, String newPass) {
 		for(Users u : repo.findAll()) {
-			if(u.getEmail().equals(email) && u.getPassword().equals(getEncodedString(currPass))) {		
+			if(u.getEmail().equals(email) && u.getPassword().equals(encdec.getEncodedString(currPass))) {		
 				Users res=new Users();
 				res.setId(u.getId());
 				res.setName(u.getName());
 				res.setEmail(u.getEmail());
 				res.setAddress(u.getAddress());
-				res.setPassword(getEncodedString(newPass));
+				res.setPassword(encdec.getEncodedString(newPass));
 				repo.save(res);
 			}
 		}
@@ -71,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	//Code to add user details
 	@Override
 	public String addDetails(Users user) {
-		user.setPassword(getEncodedString(user.getPassword()));
+		user.setPassword(encdec.getEncodedString(user.getPassword()));
 		repo.save(user);
 		return "registration";
 	}
@@ -89,26 +98,28 @@ public class UserServiceImpl implements UserService {
 				userobject.put("name", u.getName());
 				userobject.put("email", u.getEmail());
 				userobject.put("address", u.getAddress());
+				userobject.put("password",encdec.getDecodedString(u.getPassword()));
 			}
 		}
 		return userobject.toString();
 	}
 	
 	/**********************************************************************************************************/
-	@SuppressWarnings("unchecked")
+	
 	//Code to fetch all users
 	@Override
 	public List<Users> getUsers() {
-		/* Test code to fetch users using JSON  */
-		int id=0;
-		JSONObject jsobj=new JSONObject();
-		for(Users u : repo.findAll()) {
-			id++;
-			jsobj.put("user"+id, u);
+		List<Users> ml=new ArrayList<Users>();
+		for(Users u: repo.findAll()) {
+			Users user = new Users();
+			user.setId(u.getId());
+			user.setName(u.getName());
+			user.setEmail(u.getEmail());
+			user.setAddress(u.getAddress());
+			user.setPassword(encdec.getDecodedString(u.getPassword().toString()));
+			ml.add(user);
 		}
-		/* Test code to fetch users using JSON ends */
-		
-		return repo.findAll();
+		return ml;
 	}
 	
 	/**********************************************************************************************************/
@@ -137,30 +148,9 @@ public class UserServiceImpl implements UserService {
 	//Code to update user details
 	@Override
 	public String updateUser(Users user) {
-		String pass="";
-		for(Users uu : repo.findAll()) {
-			if(user.getEmail().equals(uu.getEmail())){
-				pass=uu.getPassword();
-			}
-		}
-		user.setPassword(pass);
 		if(repo.save(user) != null) {
 			return "User updated !";
 		}
 		return "User cann't update !";
-	}
-	
-	/**********************************************************************************************************/
-	
-	//To encrypt password string
-	public String getEncodedString(String str) {
-		return Base64.getEncoder().encodeToString(str.getBytes());
-	}
-	
-	/**********************************************************************************************************/
-	
-	//To decrypt the encrypted password string
-	public String getDecodedString(String encoded) {
-		return new String(Base64.getDecoder().decode(encoded));
 	}
 }

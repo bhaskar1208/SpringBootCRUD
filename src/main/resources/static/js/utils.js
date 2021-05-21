@@ -47,13 +47,15 @@ $("#regShowHidePasswordBox").click(function(){
 	}
 });
 
-function validate(){
-	var pass=$("#password").val();
+function validate(pass,id){
 	var pattern = /^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&]).*$/;
 	if(!pattern.test(pass)){
 		$("#invalidTxt").html("Password must contain atleast one lower case,upper case ,number and special character ! ");
+		$("#"+id).attr("disabled","disabled");
 		return false;
 	}
-	else
+	else{
 		$("#invalidTxt").html("");
+		$("#"+id).removeAttr("disabled");
+	}
 }

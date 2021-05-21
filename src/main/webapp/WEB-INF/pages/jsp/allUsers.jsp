@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@page import="java.util.List" %>
+<%@page language="java" import="java.util.List" %>
+<%@page language="java" import="net.sf.json.JSONArray"%>
+<%@page language="java" import="org.json.simple.JSONObject"%>
+<%@page language="java" import="org.json.simple.parser.JSONParser"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +31,7 @@
 				                    <th>Name</th>
 				                    <th>Email</th>
 				                    <th>Address</th>
+				                    <th>Password</th>
 				                    <th colspan="2" align="center"><i class="fa fa-wrench" aria-hidden="true"></i></th>
 				                </tr>
 				            </thead>
@@ -35,43 +41,38 @@
 			            		String name="";
 			            		String email="";
 			            		String address="";
+			            		String password="";
 			            		List userList = (List) request.getAttribute("listUsers");
+			            		JSONArray jArray = new JSONArray();
 			            		for(int i=0; i<userList.size(); i++){
-			            			uid="";
-			            			name="";
-			            			email="";
-			            			address="";
-			            			
-			            			String userData[]=userList.get(i).toString().replace("]","").split(",");
-			            			
-			            			uid=userData[0].split("=")[1];
-			            			name=userData[1].split("=")[1];
-			            			email=userData[2].split("=")[1];
-			            			address=userData[3].split("=")[1];
+			            			jArray.add(userList.get(i));
+			            		}	
+	
+			    				for(int j=0; j<jArray.size(); j++){
+			    					JSONParser parser = new JSONParser();  
+			    					JSONObject json = (JSONObject) parser.parse(jArray.get(j).toString());
+			    				
+			    					uid=json.get("id").toString();
+			            			name=json.get("name").toString();
+			            			email=json.get("email").toString();
+			            			address=json.get("address").toString();
+			            			password=json.get("password").toString();
+		
 			            			out.println("<tr>");
 			            			out.println("<td>"+uid+"</td>");
 			            			out.println("<td>"+name+"</td>");
 			            			out.println("<td>"+email+"</td>");
 			            			out.println("<td>"+address+"</td>");
+			            			out.println("<td>"+password+"</td>");
 			            			out.println("<td><i class='fa fa-trash' onclick='javascript:deleteUser("+uid+");'></i></td>");
 			            			%>
 			            			<td>
-			            				<a data-toggle='modal' data-target='#myModal' onclick="javascript:plotToModal('<%=uid%>','<%=name%>','<%=email%>','<%=address%>');"><i class='fa fa-pencil'></i></a>
+			            				<a data-toggle='modal' data-target='#myModal' onclick="javascript:plotToModal('<%=uid%>','<%=name%>','<%=email%>','<%=address%>','<%=password%>');"><i class='fa fa-pencil'></i></a>
 			            			</td>
 			            			<%
 			            			out.println("<tr>");
-			            		}
-			            	
+			    				}
 				            	%>
-				            	<!-- Thymeleaf Template -->
-				                <%-- 
-				                	<tr th:each="user: ${listUsers}">
-				                    <td th:text="${user.id}">User ID</td>
-				                    <td th:text="${user.name}">Name</td>
-				                    <td th:text="${user.email}">Email</td>
-				                    <td th:text="${user.address}">Address</td>
-				                </tr> 
-			                --%>
 			           		</tbody>
 			        	</table>
 					</div>
@@ -93,12 +94,14 @@
 			          			<th>Name</th>
 			          			<th>Email</th>
 			          			<th>Address</th>
+			          			<th>Password</th>
 			          		</tr>
 			          		<tr>
 			          			<td><p class="text-danger" id="modelUid"></p></td>
-			          			<td><input class="form-control" type="text" name="modelName" id="modelName" style="width:250px;"></td>
+			          			<td><input class="form-control" type="text" name="modelName" id="modelName" style="width:180px;"></td>
 			          			<td><input class="form-control" type="text" name="modelEmail" id="modelEmail" style="width:250px;"></td>
-			          			<td><textarea class="form-control" id="modelAddress" rows="3" cols="60" name="modelAddress" maxlength="300"></textarea></td>
+			          			<td><textarea class="form-control" id="modelAddress" rows="3" cols="80" name="modelAddress" maxlength="300"></textarea></td>
+			          			<td><input class="form-control" id="modelPassword" name="modelPassword" style="width:180px;"></td>
 			          		</tr>
 			          	</table>
 			          	<center><button class="btn btn-primary" id="updateBtn">Update</button></center>

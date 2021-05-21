@@ -21,21 +21,24 @@ function deleteUser(uid){
             }
         }); 
 	}
-	function plotToModal(uid,name,email,address){
+	function plotToModal(uid,name,email,address,password){
 		$("#modelUid").html("");
 		$("#modelName").val("");
 		$("#modelEmail").val("");
 		$("#modelAddress").val("");
+		$("#modelPassword").val("");
 		$("#modelUid").html(uid);
 		$("#modelName").val(name);
 		$("#modelEmail").val(email);
 		$("#modelAddress").val(address);
+		$("#modelPassword").val(password);
 	}
 	$("#updateBtn").click(function(){
 		var uid=$("#modelUid").html();
 		var name=$("#modelName").val();
 		var email=$("#modelEmail").val();
 		var address=$("#modelAddress").val();
+		var password=$("#modelPassword").val();
 		if(uid=="")
 		return false;
 		else if(name==""){
@@ -50,8 +53,12 @@ function deleteUser(uid){
 			$("#modelAddress").focus();
 			return false;
 		}
+		else if(password==""){
+			$("#modelPassword").focus();
+			return false;
+		}
 		else{
-			var posting=$.post("updateUser",{uid:uid,name:name,email:email,address:address});
+			var posting=$.post("updateUser",{uid:uid,name:name,email:email,address:address,password:password});
 			posting.done(function(data){
 				data=data.trim();
 				alert(data);

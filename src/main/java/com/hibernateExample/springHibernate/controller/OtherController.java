@@ -27,14 +27,16 @@ public class OtherController {
 	@Autowired
 	public UserService userService;
 	
+	@Autowired
+	public PasswordEncryptionDecryption encdec;
+
 	/**********************************************************************************************************/
 	
 	//Controller to login handle
 	@RequestMapping("loginAction")
 	public String login(@RequestParam("email") String email,@RequestParam("password") String pwd,Model model,HttpSession session) {
-		String res=this.userService.userLogin(email,pwd);
+		String res=this.userService.userLogin(email,pwd,session);
 		if(res.equals("1")){
-			session.setAttribute("email", email);
 			return "home";
 		}
 		else{
@@ -91,6 +93,7 @@ public class OtherController {
 		model.addAttribute("username",object.get("name"));
 		model.addAttribute("useremail",object.get("email"));
 		model.addAttribute("useradd",object.get("address"));
+		model.addAttribute("userpass",object.get("password"));
 		return "user";
 	}
 	
@@ -106,12 +109,13 @@ public class OtherController {
 	
 	//Controller to update single user details
 	@PostMapping("updateUser")
-	public @ResponseBody String updateUser(@RequestParam("uid") String uid,@RequestParam("name") String name, @RequestParam("email") String email,@RequestParam("address") String address) {
+	public @ResponseBody String updateUser(@RequestParam("uid") String uid,@RequestParam("name") String name, @RequestParam("email") String email,@RequestParam("address") String address,@RequestParam("password") String password) {
 		Users user=new Users();
 		user.setId(Long.parseLong(uid));
 		user.setName(name);
 		user.setEmail(email);
 		user.setAddress(address);
+		user.setPassword(encdec.getEncodedString(password));
 		return this.userService.updateUser(user);
 	}
 }

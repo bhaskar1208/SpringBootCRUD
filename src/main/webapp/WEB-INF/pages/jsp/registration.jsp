@@ -48,7 +48,7 @@
 						</tr>
 						<tr>
 							<th>Password </th>
-							<td><input type="password" class="form-control" name="password" id="password" placeholder="Enter password" onkeyup="return validate()"  required>
+							<td><input type="password" class="form-control" name="password" id="password" placeholder="Enter password" onkeyup="return validate(this.value,'btnRegSubmit')"  required>
 							<p id="invalidTxt" class="text-danger"></p>
 							</td>
 						</tr>
@@ -59,7 +59,7 @@
 							</td>
 						</tr>
 						
-						<tr><td colspan="2" align="center"><input type="submit" name="submit" class="btn  btn-primary p-2 float-right" onclick="return validate();" value="SUBMIT"></td></tr>
+						<tr><td colspan="2" align="center"><input type="submit" name="submit" class="btn  btn-primary p-2 float-right" id="btnRegSubmit" value="SUBMIT"></td></tr>
 					</tbody>
 				</table>
 			</form>

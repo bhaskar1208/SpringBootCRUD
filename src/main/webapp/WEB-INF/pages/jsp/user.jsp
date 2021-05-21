@@ -34,7 +34,7 @@
 			            		<tr>
 									<%
 									if(request.getAttribute("userid")==null){
-										out.println("<td colspan='4' align='center' style='color:red'>No user matched !</td>");
+										out.println("<td colspan='5' align='center' style='color:red'>No user matched !</td>");
 									}
 									else
 									{
@@ -43,6 +43,7 @@
 			            			<td><input type="text" id="suser-name" class="form-control" value='<%=request.getAttribute("username") %>' readonly></td>
 			            			<td><input type="text" id="suser-email" class="form-control" value='<%=request.getAttribute("useremail") %>' readonly></td>
 			            			<td><input type="text" id="suser-address" class="form-control" value='<%=request.getAttribute("useradd") %>' readonly></td>
+			            			<td><input type="text" id="suser-address" class="form-control" value='<%=request.getAttribute("userpass") %>' readonly></td>
 			            			<%
 			            			} 
 			            			%>
