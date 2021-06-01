@@ -18,7 +18,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private MainRepo repo;
-	@SuppressWarnings("null")
 	@Override
 	
 	/**********************************************************************************************************/
